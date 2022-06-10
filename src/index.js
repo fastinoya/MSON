@@ -1,17 +1,49 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import Component from "mson-react/lib/component";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const definition = {
+  component: "Form",
+  fields: [
+    {
+      name: "heading",
+      component: "Text",
+      text: "# Login Page"
+    },
+    {
+      name: "email",
+      component: "EmailField",
+      label: "Email Id",
+      required: true
+    },
+    {
+      name: "password",
+      component: "PasswordField",
+      label: "Password",
+      required: true
+    },
+    {
+      name: "phone",
+      component: "PhoneField",
+      label: "Phone"
+    },
+    {
+      name: "submit",
+      component: "ButtonField",
+      label: "Submit",
+      type: "submit",
+      icon: "Send"
+    }
+  ]
+};
+
+
+ReactDOM.render(
+  <Component
+    definition={definition}
+    onSubmit={({ component }) => {
+      alert(JSON.stringify(component.getValues()));
+    }}
+  />,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
