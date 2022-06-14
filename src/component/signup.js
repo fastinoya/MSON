@@ -1,6 +1,7 @@
 import React from 'react'
 import Component from "mson-react/lib/component";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const definition = {
     component: "Form",
@@ -9,14 +10,9 @@ const definition = {
         {
             name: "heading",
             component: "Text",
-            text: "# Profile Page"
+            text: "# Sign Up Page"
         },
-        {
-            name: 'Name',
-            component: 'TextField',
-            label: 'Name',
-            required: true
-        },
+
         {
             name: "email",
             component: "EmailField",
@@ -24,40 +20,16 @@ const definition = {
             required: true
         },
         {
-            name: "password",
+            name: "pass",
             component: "PasswordField",
             label: "Password",
             required: true
         },
         {
-            name: "Role",
-            component: "TextField",
-            label: "Role"
-        },
-        {
-            name: "Gender",
-            component: "TextField",
-            label: 'Gender'
-        },
-        {
-            name: "BirthDate",
-            component: "DateField",
-            label: 'Date Of Birth'
-        },
-        {
-            name: 'Country',
+            name: 'username',
             component: 'TextField',
-            label: 'Country'
-        },
-        {
-            name: "phone",
-            component: "PhoneField",
-            label: "Phone"
-        },
-        {
-            name: 'Language',
-            component: 'TextField',
-            label: 'Language',
+            label: 'Name',
+            required: true
         },
         {
             name: "submit",
@@ -70,15 +42,21 @@ const definition = {
 };
 
 function profile() {
+    const navigate = useNavigate()
     return (<Component
         definition={definition}
         onSubmit={({ component }) => {
-            axios.post('https://api.dev.multiple-system.com/api/MyProfile', component.getValues())
+            axios.post('https://api.dev.multiple-system.com/api/registration', component.getValues())
                 .then(res => {
+                    navigate('/profile')
                     alert(JSON.stringify(component.getValues()))
                     console.log(res)
                 }
-                ).catch(e => console.log(e))
+                ).catch(e => {
+                    console.log(e)
+                    alert('Account already exists. Please Sign In')
+                    navigate('/')
+                })
         }}
     />)
 }

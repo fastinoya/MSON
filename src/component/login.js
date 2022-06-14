@@ -12,18 +12,12 @@ const definition = {
             text: "# Login Page"
         },
         {
-            name: "name",
-            component: "TextField",
-            label: "Name",
-            required: true
-        },
-        {
             name: "email",
             component: "EmailField",
             label: "Email Id",
         },
         {
-            name: "password",
+            name: "pass",
             component: "PasswordField",
             label: "Password",
             required: true
@@ -47,18 +41,6 @@ const definition = {
             }
         }
     ],
-    listeners: [
-        {
-            event: 'submit',
-            actions: [
-                {
-                    component: 'Set',
-                    name: 'fields.email.value',
-                    value: '{{fields.name.value}}@gmail.com'
-                }
-            ]
-        }
-    ]
 };
 
 
@@ -68,13 +50,17 @@ const login = () => {
         <Component
             definition={definition}
             onSubmit={({ component }) => {
-                axios.post('https://jsonplaceholder.typicode.com/posts', component.getValues())
+                axios.post('https://api.dev.multiple-system.com/api/login', component.getValues())
                     .then(res => {
                         navigate('/profile')
                         alert(JSON.stringify(component.getValues()))
                         console.log(res)
                     }
-                    ).catch(e => console.log(e))
+                    ).catch(e => {
+                        console.log(e);
+                        alert('Account does not exists please sign up');
+                        navigate('/signup');
+                    })
             }}
         />
     )
